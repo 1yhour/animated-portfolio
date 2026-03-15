@@ -1,6 +1,16 @@
+import Navbar from "./components/layout/Navbar"
+
 const App = () => {
   return (
-    <div className="bg-amber-200 font-bold">App</div>
+    <div className="min-h-screen">
+      <Navbar />
+      <main>
+          {/* Your main content goes here */}
+      </main>
+      <footer>
+        {/* Your footer content goes here */}
+      </footer>
+    </div>
   )
 }
 
