@@ -1,31 +1,40 @@
-import Navbar from "./components/layout/Navbar"
+import Navbar from "./components/layout/Navbar";
+import Hero from "./components/sections/Hero";
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="relative isolate min-h-screen bg-[#f4f4f4] text-neutral-900">
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <svg
+          viewBox="0 0 400 400"
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-full w-full"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <filter id="noiseFilter">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="50"
+              numOctaves="1"
+              stitchTiles="stitch"
+            />
+          </filter>
 
+          <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+        </svg>
+      </div>
 
-<svg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'>
-  <filter id='noiseFilter'>
-    <feTurbulence 
-      type='fractalNoise' 
-      baseFrequency='10' 
-      numOctaves='1' 
-      stitchTiles='stitch'/>
-  </filter>
-  
-  <rect width='100%' height='100%' filter='url(#noiseFilter)'/>
-</svg>
-      <Navbar />
-      <main>
-          {/* Your main content goes here */}
-      </main>
-      <footer>
-        {/* Your footer content goes here */}
-      </footer>
-      
+      <div className="relative z-10">
+        <Navbar />
+        <main className="relative z-10">
+        <Hero />
+        </main>
+        <footer className="relative z-10">
+          {/* Your footer content goes here */}
+        </footer>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

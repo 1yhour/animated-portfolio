@@ -10,8 +10,7 @@ const Navbar = () => {
   };
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-[clamp(1rem,5vw,3.5rem)] py-[clamp(1rem,5vw,3.5rem)] transition-transform duration-500 ease-out translate-y-0">
-      <div className="mx-auto max-w-8xl px-4 md:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between">
           <a href="/" className="text-[clamp(1.25rem,2.5vw,1.5625rem)] font-extrabold text-text hover:opacity-80 transition-opacity z-50">
             Lyhour.
           </a> 
@@ -58,7 +57,6 @@ const Navbar = () => {
             </div>
           )}
         </div>
-      </div>
     </header>
   );
 };
