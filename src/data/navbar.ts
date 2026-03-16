@@ -1,20 +1,17 @@
 import type { Navbar } from "../types/index";
 export const navbar: Navbar[] = [
   {
-    text: "Home",
-    href: "/",
-  },
-  {
     text: "About",
     href: "/about",
   },
   {
-    text: "Skills",
-    href: "/skills",
+    text: "Process",
+    href: "/process",
   },
+  
   {
-    text: "Projects",
-    href: "/projects",
+    text: "Work",
+    href: "/work",
   },
   {
     text: "Contact",
