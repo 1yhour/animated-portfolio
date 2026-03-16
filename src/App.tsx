@@ -1,16 +1,21 @@
+import LoadingScreen from "./components/layout/loadingScreen";
+import { useState } from "react";
 import Navbar from "./components/layout/Navbar";
 import About from "./components/sections/About";
 import Hero from "./components/sections/Hero";
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
   return (
     <div className="relative isolate min-h-screen bg-[#f4f4f4] text-neutral-900">
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      <div className="pointer-events-none fixed inset-0 z-20 overflow-hidden">
+        {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
         <svg
           viewBox="0 0 400 400"
           xmlns="http://www.w3.org/2000/svg"
           className="h-full w-full"
           preserveAspectRatio="xMidYMid slice"
+          style={{ mixBlendMode: "overlay", opacity: 0.5 }}
         >
           <filter id="noiseFilter">
             <feTurbulence
@@ -21,7 +26,7 @@ const App = () => {
             />
           </filter>
 
-          <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+          <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
         </svg>
       </div>
 

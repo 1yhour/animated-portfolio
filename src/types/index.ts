@@ -6,4 +6,8 @@ export type Hero = {
   skills: string;
   symbol?: string;
 }
-
+export type Greeting = {
+  text: string;
+  lang: string;
+  font: string;
+}
