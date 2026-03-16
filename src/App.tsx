@@ -1,4 +1,5 @@
 import Navbar from "./components/layout/Navbar";
+import About from "./components/sections/About";
 import Hero from "./components/sections/Hero";
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
         <Navbar />
         <main className="relative z-10">
         <Hero />
+        <About />
         </main>
         <footer className="relative z-10">
           {/* Your footer content goes here */}
