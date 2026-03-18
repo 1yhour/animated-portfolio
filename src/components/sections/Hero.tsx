@@ -1,7 +1,9 @@
 const Hero = () => {
-    
   return (
-    <section id="hero" className="relative min-h-screen px-[clamp(1rem,5vw,3.5rem)] flex flex-col justify-between pt-[clamp(5rem,15vw,8rem)]">
+    <section
+      id="hero"
+      className="relative min-h-screen px-[clamp(1rem,5vw,3.5rem)] flex flex-col justify-between pt-[clamp(5rem,15vw,8rem)]"
+    >
       <div className="flex-1 flex items-center justify-center pb-[clamp(1.25rem,5vw,5rem)]">
         <h1 className="text-[clamp(2rem,8vw,3.125rem)] leading-[1.2] text-center sm:text-left text-text">
           <span className="font-light">creative </span>

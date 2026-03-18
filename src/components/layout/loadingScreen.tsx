@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { GREETINGS } from "../../data/greetings";
+import LoadingNoiseBg from "../ui/LoadingNoiseBg";
 
 export default function LoadingScreen({
   onComplete,
@@ -88,22 +89,7 @@ export default function LoadingScreen({
       style={{ fontFamily: "'Raleway', sans-serif" }}
     >
       {/* ── Grain / noise texture ─────────────────────────────── */}
-      <svg
-        className="pointer-events-none absolute inset-0 z-[1] h-full w-full opacity-20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <filter id="grain" x="0%" y="0%" width="100%" height="100%">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.72"
-            numOctaves="4"
-            stitchTiles="stitch"
-          />
-          <feColorMatrix type="saturate" values="0" />
-          <feBlend in="SourceGraphic" mode="overlay" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#grain)" opacity="0.5" />
-      </svg>
+      <LoadingNoiseBg className="z-20"/>
 
       {/* ── Top progress bar ──────────────────────────────────── */}
       <div className="absolute top-0 left-0 z-10 h-[1.5px] w-full bg-white/[0.08]">

@@ -3,42 +3,30 @@ import { useState } from "react";
 import Navbar from "./components/layout/Navbar";
 import About from "./components/sections/About";
 import Hero from "./components/sections/Hero";
+import NoiseBackground from "./components/ui/NoiseBackground";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
   return (
     <div className="relative isolate min-h-screen bg-[#f4f4f4] text-neutral-900">
-      <div className="pointer-events-none fixed inset-0 z-20 overflow-hidden">
-        {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
-        <svg
-          viewBox="0 0 400 400"
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-full w-full"
-          preserveAspectRatio="xMidYMid slice"
-          style={{ mixBlendMode: "overlay", opacity: 0.5 }}
-        >
-          <filter id="noiseFilter">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="50"
-              numOctaves="1"
-              stitchTiles="stitch"
-            />
-          </filter>
+      {loading && (
+        <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
+          <LoadingScreen onComplete={() => setLoading(false)} />
+        </div>
+      )}
 
-          <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
-        </svg>
-      </div>
-
-      <div className="relative z-10">
-        <Navbar />
-        <main className="relative z-10">
-        <Hero />
-        <About />
-        </main>
-        <footer className="relative z-10">
-          {/* Your footer content goes here */}
-        </footer>
+      <div className="relative isolate overflow-hidden">
+        <NoiseBackground />
+        <div className="relative z-10">
+          <Navbar />
+          <main className="relative ">
+            <Hero />
+            <About />
+          </main>
+          <footer className="relative">
+            {/* Your footer content goes here */}
+          </footer>
+        </div>
       </div>
     </div>
   );
