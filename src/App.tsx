@@ -4,7 +4,7 @@ import Navbar from "./components/layout/Navbar";
 import About from "./components/sections/About";
 import Hero from "./components/sections/Hero";
 import NoiseBackground from "./components/ui/NoiseBackground";
-
+import { AboutSection } from "./components/sections/AboutCard";
 const App = () => {
   const [loading, setLoading] = useState(true);
   return (
@@ -22,6 +22,7 @@ const App = () => {
           <main className="relative ">
             <Hero />
             <About />
+            <AboutSection />
           </main>
           <footer className="relative">
             {/* Your footer content goes here */}

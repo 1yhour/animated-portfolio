@@ -1,7 +1,6 @@
 const About = () => {
   return (
     <section
-      id="about-link"
       className="relative h-screen flex items-center justify-center"
     >
       <div className="text-center px-8">
