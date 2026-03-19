@@ -29,7 +29,7 @@ export function CardPanel({ item }: CardPanelProps) {
                 loading="lazy"
                 className="
                   about-panel-img
-                  object-cover object-top w-full h-full
+                  object-cover object-bottom w-full h-full
                   grayscale-[20%] hover:grayscale-0
                   transition-[filter] duration-700
                 "
