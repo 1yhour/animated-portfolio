@@ -16,7 +16,7 @@ const LoadingNoiseBg = ({ className = "" }: LoadingNoiseBgProps) => {
         <filter id={filterId} x="0%" y="0%" width="100%" height="100%">
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.72"
+            baseFrequency="0.80"
             numOctaves="4"
             stitchTiles="stitch"
           />
@@ -27,7 +27,7 @@ const LoadingNoiseBg = ({ className = "" }: LoadingNoiseBgProps) => {
           width="100%"
           height="100%"
           filter={`url(#${filterId})`}
-          opacity="0.2"
+          opacity="0.15"
         />
       </svg>
     </div>

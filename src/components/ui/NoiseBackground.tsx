@@ -21,7 +21,7 @@ const NoiseBackground = ({ className = "" }: NoiseBackgroundProps) => {
         <filter id={filterId}>
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="10"
+            baseFrequency="100"
             numOctaves="4"
             stitchTiles="stitch"
           />
@@ -31,7 +31,7 @@ const NoiseBackground = ({ className = "" }: NoiseBackgroundProps) => {
           width="100%"
           height="100%"
           filter={`url(#${filterId})`}
-          opacity="0.5"
+          opacity="0.7"
         />
       </svg>
     </div>
