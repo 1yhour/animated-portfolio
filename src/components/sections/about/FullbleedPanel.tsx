@@ -42,7 +42,7 @@ export function FullbleedPanel({ item }: FullbleedPanelProps) {
 
       <div className="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-12 gap-8 lg:gap-16 items-center">
         <TextColumn item={item} />
-        <div className="hidden lg:block lg:col-span-5" />
+          <span className="font-extrabold select-none leading-none text-white/[0.03]" style={{ fontSize: "clamp(15rem, 25vw, 30rem)", opacity: 1 }}>02</span>
       </div>
     </>
   );
