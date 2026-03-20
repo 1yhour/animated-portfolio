@@ -20,7 +20,7 @@ export function AboutSection() {
     const images =
       slider.querySelectorAll<HTMLImageElement>(".about-panel-img");
     const totalWidth = (panels.length - 1) * 100;
-    const scrollDistanceFactor = 1.5;
+    const scrollDistanceFactor = 7;
 
     // ── Horizontal scroll + pin ──────────────────────────
     const scrollTween = gsap.to(slider, {
