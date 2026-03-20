@@ -7,6 +7,7 @@ import NoiseBackground from "./components/ui/NoiseBackground";
 import { AboutSection } from "./components/sections/AboutCard";
 import Process from "./components/sections/Process";
 import { ProcessSection } from "./components/sections/WorkProcess";
+import Work from "./components/sections/Work";
 const App = () => {
   const [loading, setLoading] = useState(true);
   return (
@@ -27,6 +28,7 @@ const App = () => {
             <AboutSection />
             <Process /> 
             <ProcessSection />
+            <Work />
           </main>
           <footer className="relative">
             {/* Your footer content goes here */}
