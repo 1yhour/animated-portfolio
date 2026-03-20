@@ -6,7 +6,7 @@ const Process = () => {
     <section
       className="relative h-screen flex items-center justify-center"
     >
-        <LoadingNoiseBg className="-z-10 bg-black opacity-100" />
+        <LoadingNoiseBg className="-z-10 bg-black opacity-97" />
       <div className="text-center px-8 ">
         <span className="text-text/50 font-light text-sm tracking-[0.3em] uppercase block mb-6 text-gray-300">
         HOW I WORK

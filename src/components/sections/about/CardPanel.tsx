@@ -9,7 +9,7 @@ type CardPanelProps = {
 export function CardPanel({ item }: CardPanelProps) {
   return (
     <>
-      <LoadingNoiseBg className="z-[1] bg-black opacity-100" />
+      <LoadingNoiseBg className="z-[1] bg-black opacity-97" />
 
       <div className="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-12 gap-8 lg:gap-16 items-center">
         <TextColumn item={item} />
