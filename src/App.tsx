@@ -6,6 +6,7 @@ import Hero from "./components/sections/Hero";
 import NoiseBackground from "./components/ui/NoiseBackground";
 import { AboutSection } from "./components/sections/AboutCard";
 import Process from "./components/sections/Process";
+import { ProcessSection } from "./components/sections/WorkProcess";
 const App = () => {
   const [loading, setLoading] = useState(true);
   return (
@@ -25,6 +26,7 @@ const App = () => {
             <About />
             <AboutSection />
             <Process /> 
+            <ProcessSection />
           </main>
           <footer className="relative">
             {/* Your footer content goes here */}

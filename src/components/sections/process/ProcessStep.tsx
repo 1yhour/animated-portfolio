@@ -1,38 +1,90 @@
-import type { processType } from "../../../types";
-interface ProcessStepProps {
-  data: processType;
-}
+// ============================================================
+// 📁 components/process/ProcessItem.tsx
+// Pure layout component — zero animation logic
+// Receives: item data + two refs (forwarded from parent)
+// ============================================================
 
-export const ProcessStep = ({ data }: ProcessStepProps) => {
-  return (
-    <div className="process-step-item relative flex flex-col md:flex-row gap-10 py-20 border-t border-zinc-800/50">
-      {/* Left Side: Index & Title */}
-      <div className="md:w-1/3">
-        <span className="text-zinc-600 font-mono text-sm uppercase tracking-widest">
-          {data.id} — Phase
-        </span>
-        <h3 className="text-5xl font-bold text-white mt-4 uppercase italic">
-          {data.title}
-        </h3>
-        <p className="text-zinc-500 mt-2 font-serif italic text-lg">
-          "{data.tagline}"
-        </p>
-      </div>
+import { forwardRef } from "react";
+import type { processType } from "@/types/index";
 
-      {/* Right Side: Narrative & List */}
-      <div className="md:w-2/3 flex flex-col gap-6">
-        <p className="text-zinc-300 text-xl leading-relaxed max-w-2xl">
-          {data.description}
-        </p>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {data.keypoints.map((point, index) => (
-            <li key={index} className="flex items-center text-zinc-500 text-sm uppercase tracking-tighter">
-              <span className="w-1.5 h-1.5 bg-zinc-700 rounded-full mr-3" />
-              {point}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+type ProcessItemProps = {
+  item: processType;
 };
+
+// forwardRef — parent (ProcessSection) needs a ref on this DOM node
+// to register it in itemsRef[] for GSAP targeting
+const ProcessItem = forwardRef<HTMLDivElement, ProcessItemProps>(
+  ({ item }, ref) => {
+    return (
+      <div ref={ref} className="relative py-20 lg:py-32">
+
+        {/* ── 12-col grid: left heading | right description ── */}
+        <div className="lg:ml-20 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+
+          {/* ── Left col — col-span-5: number + heading + tagline ── */}
+          <div className="lg:col-span-5 flex flex-col gap-4">
+
+            {/* Number row: 01 —— */}
+            <div className="process-animate flex items-center gap-4">
+              <span className="text-white/30 font-extrabold text-sm tracking-[0.3em]">
+                {item.id}
+              </span>
+              <div className="h-px w-8 bg-white/20" />
+            </div>
+
+            {/* Heading — Discover / Define / Design / Deliver */}
+            <h3
+              className="process-animate text-white font-extrabold leading-[0.95] tracking-tight"
+              style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}
+            >
+              {item.title}
+            </h3>
+
+            {/* Italic tagline */}
+            <p
+              className="process-animate text-white/70 font-light italic leading-relaxed"
+              style={{ fontSize: "clamp(1rem, 1.2vw, 1.125rem)" }}
+            >
+              &ldquo;{item.tagline}&rdquo;
+            </p>
+          </div>
+
+          {/* ── Right col — col-span-7: description + bullet points ── */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
+
+            {/* Description paragraph */}
+            <p
+              className="process-animate text-white/60 font-light leading-[1.8]"
+              style={{ fontSize: "clamp(0.9375rem, 1.2vw, 1.125rem)" }}
+            >
+              {item.description}
+            </p>
+
+            {/* Bullet list — looped from item.keypoints[] */}
+            <div className="flex flex-col gap-3">
+              {item.keypoints.map((point: string) => (
+                <div key={point} className="process-animate flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />
+                  <span className="text-white/50 font-light text-sm">
+                    {point}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        {/* Bottom rule — scaleX 0→1 animated by parent, origin-left */}
+        <div
+          className="process-rule lg:ml-20 h-px bg-white/10 mt-20 lg:mt-32 origin-left"
+          style={{ transform: "scaleX(0)" }}
+        />
+
+      </div>
+    );
+  }
+);
+
+ProcessItem.displayName = "ProcessItem";
+export default ProcessItem;

@@ -22,3 +22,10 @@ export type AboutData = {
   image?: string;
   layout: string;
 }
+export type processType = {
+  id: string,
+  title: string,
+  tagline: string,
+  description: string,
+  keypoints: string[],
+}

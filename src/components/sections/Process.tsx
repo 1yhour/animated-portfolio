@@ -3,7 +3,7 @@ import LoadingNoiseBg from "../ui/LoadingNoiseBg";
 const Process = () => {
   return (
     
-    <section
+    <section id="process-link"
       className="relative h-screen flex items-center justify-center"
     >
         <LoadingNoiseBg className="-z-10 bg-black opacity-97" />
