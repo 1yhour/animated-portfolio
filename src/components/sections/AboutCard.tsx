@@ -1,14 +1,3 @@
-"use client";
-
-// ============================================================
-// AboutSection.tsx
-//
-// Both panels share IDENTICAL text layout (col-span-7 left).
-// What differs per panel:
-//   "card"      → dark noise bg  + portrait card right + dot beside card
-//   "fullbleed" → grayscale bg image + empty right side + dot top-center
-// ============================================================
-
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -18,49 +7,6 @@ import { CardPanel } from "./about/CardPanel";
 import { FullbleedPanel } from "./about/FullbleedPanel";
 
 gsap.registerPlugin(ScrollTrigger);
-
-// ============================================================
-// TYPE — add to @/types
-// ============================================================
-//
-// export type PanelLayout = "card" | "fullbleed";
-//
-// export type AboutData = {
-//   id: string;
-//   tagline: string;
-//   heading: string;
-//   body: string;
-//   image: string;
-//   background?: string;
-//   layout: PanelLayout;
-// };
-
-// ============================================================
-// DATA — @/data/aboutData.ts
-// ============================================================
-//
-// export const ABOUTDATA: AboutData[] = [
-//   {
-//     id: "01",
-//     tagline: "Designer & Developer",
-//     heading: "Hello.",
-//     body: "...",
-//     image: "/images/about-portrait.webp",
-//     layout: "card",
-//   },
-//   {
-//     id: "02",
-//     tagline: "Less, But Better",
-//     heading: "Craft.",
-//     body: "...",
-//     image: "/images/about-statue.webp",
-//     layout: "fullbleed",
-//   },
-// ];
-
-// ============================================================
-// Main — GSAP horizontal scroll + pin + Ken Burns
-// ============================================================
 export function AboutSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
