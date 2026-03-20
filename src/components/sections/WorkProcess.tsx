@@ -1,16 +1,3 @@
-"use client";
-
-// ============================================================
-// 📁 components/process/ProcessSection.tsx
-// Responsibilities:
-//   1. Maps processData → <ProcessItem />
-//   2. Owns ALL GSAP animation logic:
-//        - Progress bar scaleY fill
-//        - Dot y-position tracking
-//        - Per-item text fade + slide
-//        - Per-item bottom rule scaleX
-// ProcessItem knows nothing about GSAP — clean separation
-// ============================================================
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -38,7 +25,7 @@ export function ProcessSection() {
     // gsap.context() scopes all triggers to this section only
     // ctx.revert() on cleanup kills ONLY these, not other components
     const ctx = gsap.context(() => {
-      const CYCLE = 1; // scrub lag — feels weighted, not mechanical
+      const CYCLE = 0.3; // scrub lag — feels weighted, not mechanical
 
       // ── 1. Progress bar fill ───────────────────────────────
       // scaleY: 0 → 1, origin-top → visually fills top-to-bottom
@@ -121,6 +108,21 @@ export function ProcessSection() {
 
     return () => ctx.revert(); // clean teardown on unmount
   }, []);
+  useEffect(() => {
+  if (window.innerWidth >= 1024) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.2 });
+
+  itemsRef.current.forEach(el => el && observer.observe(el));
+
+  return () => observer.disconnect();
+}, []);
 
   return (
     <section ref={sectionRef} className="relative py-32">
