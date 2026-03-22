@@ -1,24 +1,7 @@
 import { useRef } from "react";
 import { useScroll, useTransform } from "framer-motion";
 import { workData } from "@/data/workData";
-import WorkProject from "./WorkProject";
-
-/**
- * PEEK_PX — how many pixels of each buried card's header stays visible
- * above the card in front of it. Like folder tabs.
- *
- * Visual result with 3 cards, PEEK=48:
- *
- *   ┌─ card 0 header (48px) ──────────────────────┐  ← top: 96px
- *   │ ┌─ card 1 header (48px) ───────────────────┐│  ← top: 48px
- *   │ │ ┌─ card 2 (full, frontmost) ────────────┐││  ← top: 0px
- *   │ │ │                                       │││
- *   │ │ │   WEB DEVELOPMENT                     │││
- *   │ │ │   Portfolio                            │││
- *   │ │ └───────────────────────────────────────┘││
- *   │ └─────────────────────────────────────────┘│
- *   └─────────────────────────────────────────────┘
- */
+import WorkProject from "./workProject";
 const PEEK_PX = 48;
 
 const WorkSection = () => {
@@ -34,7 +17,7 @@ const WorkSection = () => {
   });
 
   return (
-    <section
+    <section id="work-link"
       ref={containerRef}
       style={{ height: `${TOTAL_SLOTS * 100}vh` }}
     >
