@@ -29,3 +29,16 @@ export type processType = {
   description: string,
   keypoints: string[],
 }
+export type workProjectType = {
+  id: string,
+  year: string,
+  title: string,
+  heading: string,
+  description: string,
+  link: string,
+  image: string,
+  linkText: {
+    text: string,
+    icon: React.ComponentType<{ className?: string }>,
+  }[],
+}

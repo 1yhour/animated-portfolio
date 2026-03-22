@@ -7,33 +7,40 @@ import NoiseBackground from "./components/ui/NoiseBackground";
 import { AboutSection } from "./components/sections/AboutCard";
 import Process from "./components/sections/Process";
 import { ProcessSection } from "./components/sections/WorkProcess";
-import Work from "./components/sections/Work";
+import WorkSection from "./components/sections/workSection";
+
 const App = () => {
   const [loading, setLoading] = useState(true);
+
   return (
+   
     <div className="relative isolate min-h-screen bg-[#f4f4f4] text-neutral-900">
       {loading && (
         <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
           <LoadingScreen onComplete={() => setLoading(false)} />
         </div>
       )}
+      <NoiseBackground />
 
-      <div className="relative isolate overflow-hidden">
-        <NoiseBackground />
-        <div className="relative z-10">
-          <Navbar />
-          <main className="relative ">
+      <div className="relative z-10">
+        <Navbar />
+
+        <main>
+          <div className="relative overflow-hidden">
             <Hero />
             <About />
-            <AboutSection />
-            <Process /> 
+            <AboutSection />  
+            <Process />
             <ProcessSection />
-            <Work />
-          </main>
-          <footer className="relative">
-            {/* Your footer content goes here */}
-          </footer>
-        </div>
+            
+          </div>
+
+         
+          <WorkSection />
+        </main>
+
+        <footer className="relative">
+        </footer>
       </div>
     </div>
   );
