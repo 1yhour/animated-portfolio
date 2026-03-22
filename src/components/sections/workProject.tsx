@@ -11,17 +11,6 @@ type WorkProjectProps = {
 
 const WorkProject = ({ items, scale, y, stickyTop, zIndex }: WorkProjectProps) => {
   return (
-    /**
-     * The sticky wrapper uses stickyTop to control the peek.
-     *
-     * Card at stickyTop=96px → its top edge sticks at 96px from viewport top.
-     * Card at stickyTop=48px → sticks at 48px → covers the bottom of the 96px card
-     *                          but leaves a 48px strip of it visible above.
-     * Card at stickyTop=0px  → sticks at top of viewport → covers all peek strips
-     *                          except the portions above its own top edge.
-     *
-     * height is viewport - stickyTop so the card always reaches the bottom.
-     */
     <div
       className="sticky flex items-start justify-center"
       style={{
