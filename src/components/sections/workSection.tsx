@@ -4,7 +4,7 @@ import { workData } from "@/data/workData";
 import WorkSectionCard from "./workSectionCard";
 const PEEK_PX = 5;
 const CARD_GAP_PX = 16;
-const NAVBAR_CLEARANCE_PX = 90;
+const NAVBAR_CLEARANCE_PX = 70;
 
 const WorkSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
