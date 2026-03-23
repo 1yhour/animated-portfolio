@@ -5,14 +5,22 @@ type WorkProjectProps = {
   items: workProjectType;
   scale: MotionValue<number>;
   y: MotionValue<string>;
-  stickyTop: number;  // px — larger = more buried in the stack
+  stickyTop: number; // px — larger = more buried in the stack
   zIndex: number;
 };
 
-const WorkSectionCard = ({ items, scale, y, stickyTop, zIndex }: WorkProjectProps) => {
+const WorkSectionCard = ({
+  items,
+  scale,
+  y,
+  stickyTop,
+  zIndex,
+}: WorkProjectProps) => {
+  const isExternalLink = /^https?:\/\//.test(items.link);
+
   return (
     <div
-      className="sticky flex items-start justify-center"
+      className="sticky flex items-start justify-center pointer-events-none"
       style={{
         top: stickyTop,
         zIndex,
@@ -28,14 +36,13 @@ const WorkSectionCard = ({ items, scale, y, stickyTop, zIndex }: WorkProjectProp
           // stickyTop accounts for the peek offset; +32 adds a small bottom gap.
           height: `calc(100vh - ${stickyTop + 32}px)`,
         }}
-        className="relative w-[calc(100vw-4rem)] lg:w-[calc(100vw-8rem)] rounded-3xl overflow-hidden"
+        className="relative w-[calc(100vw-4rem)] lg:w-[calc(100vw-16rem)] rounded-3xl overflow-hidden pointer-events-auto"
       >
         <div
           className="absolute inset-0 rounded-3xl"
           style={{ backgroundColor: "#2A2A2A" }}
         >
           <div className="absolute inset-0 flex flex-col lg:flex-row">
-
             {/* ── LEFT: Text ── */}
             <div className="flex-1 p-8 lg:p-16 xl:p-24 flex flex-col justify-between">
               {/* Top meta */}
@@ -43,7 +50,7 @@ const WorkSectionCard = ({ items, scale, y, stickyTop, zIndex }: WorkProjectProp
                 <span className="text-white/40 font-light text-sm tracking-wider">
                   {items.id}
                 </span>
-                <div className="h-px bg-white/40 max-w-[100px] flex-1" />
+                <div className="h-px bg-white/40 max-w-25 flex-1" />
                 <span className="text-white/40 font-light text-sm tracking-wider">
                   {items.year}
                 </span>
@@ -72,12 +79,15 @@ const WorkSectionCard = ({ items, scale, y, stickyTop, zIndex }: WorkProjectProp
               <div className="flex items-center gap-6">
                 <a
                   href={items.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={isExternalLink ? "_blank" : undefined}
+                  rel={isExternalLink ? "noopener noreferrer" : undefined}
                   className="group inline-flex items-center gap-8 font-medium text-sm hover:gap-5 transition-all duration-300"
                 >
                   {items.linkText?.map((link, i) => (
-                    <span key={i} className="flex items-center gap-2 text-white">
+                    <span
+                      key={i}
+                      className="flex items-center gap-2 text-white"
+                    >
                       {link.text}
                       {link.icon && <link.icon />}
                     </span>
@@ -92,11 +102,12 @@ const WorkSectionCard = ({ items, scale, y, stickyTop, zIndex }: WorkProjectProp
                 <img
                   src={items.image}
                   alt={items.heading}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
-
           </div>
         </div>
       </motion.div>
