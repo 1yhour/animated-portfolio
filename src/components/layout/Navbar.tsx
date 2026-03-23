@@ -10,6 +10,7 @@ import type { Variants } from "framer-motion";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOverWorkSection, setIsOverWorkSection] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -27,6 +28,44 @@ const Navbar = () => {
       document.body.style.overflow = "unset";
     };
   }, [isMenuOpen]);
+
+  useEffect(() => {
+    const handleScrollTheme = () => {
+      const aboutSection = document.getElementById("about-link");
+      const processSection = document.getElementById("process-link");
+      const processSectionItems = document.getElementById("process-section");
+      if (!aboutSection || !processSection || !processSectionItems) {
+        setIsOverWorkSection(false);
+        return;
+      }
+
+      const aboutRect = aboutSection.getBoundingClientRect();
+      const processRect = processSection.getBoundingClientRect();
+      const processItemsRect = processSectionItems.getBoundingClientRect();
+      const triggerY = 120;
+      const isActive =
+        (aboutRect.top <= triggerY && aboutRect.bottom >= triggerY) ||
+        (processRect.top <= triggerY && processRect.bottom >= triggerY) ||
+        (processItemsRect.top <= triggerY &&
+          processItemsRect.bottom >= triggerY);
+      setIsOverWorkSection(isActive);
+    };
+
+    handleScrollTheme();
+    window.addEventListener("scroll", handleScrollTheme, { passive: true });
+    window.addEventListener("resize", handleScrollTheme);
+
+    return () => {
+      window.removeEventListener("scroll", handleScrollTheme);
+      window.removeEventListener("resize", handleScrollTheme);
+    };
+  }, []);
+
+  const navToneClass = isMenuOpen
+    ? "text-[#111]"
+    : isOverWorkSection
+      ? "text-white"
+      : "text-text";
 
   // --- Framer Motion Animation Variants ---
   const menuEase: [number, number, number, number] = [0.76, 0, 0.24, 1];
@@ -66,14 +105,16 @@ const Navbar = () => {
         <Button
           variant="link"
           onClick={() => scrollToSection("hero", setIsMenuOpen)}
-          className="text-[clamp(1.25rem,2.5vw,1.5625rem)] font-extrabold text-text hover:opacity-80 transition-opacity"
+          className={`text-[clamp(1.25rem,2.5vw,1.5625rem)] font-extrabold hover:opacity-80 transition-[color,opacity] duration-300 ${navToneClass}`}
         >
           Lyhour.
         </Button>
 
         {/* Desktop Clock */}
         <div className="hidden lg:block absolute left-1/2 -translate-x-1/2">
-          <div className="text-[clamp(1rem,2vw,1.25rem)] font-light whitespace-nowrap text-text">
+          <div
+            className={`text-[clamp(1rem,2vw,1.25rem)] font-light whitespace-nowrap transition-colors duration-300 ${navToneClass}`}
+          >
             <LiveClock />
           </div>
         </div>
@@ -85,7 +126,7 @@ const Navbar = () => {
               key={href}
               variant="link"
               onClick={() => scrollToSection(href, setIsMenuOpen)}
-              className="text-[clamp(1rem,2.5vw,1.5625rem)] font-light text-text px-[clamp(0.25rem,1vw,0.5rem)] group cursor-pointer"
+              className={`text-[clamp(1rem,2.5vw,1.5625rem)] font-light px-[clamp(0.25rem,1vw,0.5rem)] group cursor-pointer transition-colors duration-300 ${navToneClass}`}
             >
               {text}
               <span className="opacity-50 ml-1">/</span>
@@ -97,7 +138,7 @@ const Navbar = () => {
         <Button
           variant="link"
           onClick={toggleMenu}
-          className="md:hidden p-2 text-text hover:opacity-80 font-inter_regular"
+          className={`md:hidden p-2 hover:opacity-80 font-inter_regular transition-[color,opacity] duration-300 ${navToneClass}`}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </Button>

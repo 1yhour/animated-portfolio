@@ -1,6 +1,6 @@
 import LoadingNoiseBg from "../ui/LoadingNoiseBg";
 
-const Process = () => {
+const ProcessTitle = () => {
   return (
     <section
       id="process-link"
@@ -23,4 +23,4 @@ const Process = () => {
   );
 };
 
-export default Process;
+export default ProcessTitle;

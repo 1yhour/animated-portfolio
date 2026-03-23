@@ -1,13 +1,13 @@
 import LoadingScreen from "./components/layout/loadingScreen";
 import { useState } from "react";
 import Navbar from "./components/layout/Navbar";
-import About from "./components/sections/About";
+import AboutTitle from "./components/sections/AboutTitle";
 import Hero from "./components/sections/Hero";
 import NoiseBackground from "./components/ui/NoiseBackground";
 import { AboutSection } from "./components/sections/AboutCard";
-import Process from "./components/sections/Process";
 import { ProcessSection } from "./components/sections/WorkProcess";
 import WorkSection from "./components/sections/workSection";
+import ProcessTitle from "./components/sections/ProcessTitle";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -28,9 +28,9 @@ const App = () => {
         <main>
           <div className="relative overflow-hidden">
             <Hero />
-            <About />
+            <AboutTitle />
             <AboutSection />  
-            <Process />
+            <ProcessTitle/>
             <ProcessSection />
             
           </div>
