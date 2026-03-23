@@ -15,49 +15,100 @@ export function AboutSection() {
     const section = sectionRef.current;
     const slider = sliderRef.current;
     if (!section || !slider) return;
+    const ctx = gsap.context(() => {
+      const panels = slider.querySelectorAll<HTMLDivElement>(".about-panel");
+      const images =
+        slider.querySelectorAll<HTMLImageElement>(".about-panel-img");
+      const totalWidth = (panels.length - 1) * 100;
 
-    const panels = slider.querySelectorAll<HTMLDivElement>(".about-panel");
-    const images =
-      slider.querySelectorAll<HTMLImageElement>(".about-panel-img");
-    const totalWidth = (panels.length - 1) * 100;
-    const scrollDistanceFactor = 7;
+      // Promote frequently animated layers to their own compositor layer.
+      gsap.set([slider, ...images], {
+        force3D: true,
+        willChange: "transform",
+        backfaceVisibility: "hidden",
+      });
 
-    // ── Horizontal scroll + pin ──────────────────────────
-    const scrollTween = gsap.to(slider, {
-      x: () => `-${totalWidth}vw`,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        pin: true,
-        scrub: 1,
-        start: "top top",
-        end: () => `+=${totalWidth * scrollDistanceFactor}vw`,
-        invalidateOnRefresh: true,
-      },
-    });
+      const mm = gsap.matchMedia();
 
-    // ── Ken Burns per panel ──────────────────────────────
-    images.forEach((img) => {
-      gsap.fromTo(
-        img,
-        { scale: 1.0 },
-        {
-          scale: 1.15,
+      mm.add("(max-width: 1023px)", () => {
+        const scrollTween = gsap.to(slider, {
+          x: () => `-${totalWidth}vw`,
           ease: "none",
           scrollTrigger: {
-            trigger: img.closest(".about-panel"),
-            containerAnimation: scrollTween,
-            start: "left right",
-            end: "right left",
-            scrub: true,
+            trigger: section,
+            pin: true,
+            anticipatePin: 1,
+            scrub: 0.55,
+            start: "top top",
+            end: () => `+=${totalWidth * 6}vw`,
+            invalidateOnRefresh: true,
+            fastScrollEnd: true,
           },
-        },
-      );
-    });
+        });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
+        images.forEach((img) => {
+          const panel = img.closest(".about-panel");
+          if (!panel) return;
+
+          gsap.fromTo(
+            img,
+            { scale: 1 },
+            {
+              scale: 1.1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: panel,
+                containerAnimation: scrollTween,
+                start: "left right",
+                end: "right left",
+                scrub: 0.45,
+                fastScrollEnd: true,
+              },
+            },
+          );
+        });
+      });
+
+      mm.add("(min-width: 1024px)", () => {
+        const scrollTween = gsap.to(slider, {
+          x: () => `-${totalWidth}vw`,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            pin: true,
+            scrub: 1,
+            start: "top top",
+            end: () => `+=${totalWidth * 7}vw`,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        images.forEach((img) => {
+          const panel = img.closest(".about-panel");
+          if (!panel) return;
+
+          gsap.fromTo(
+            img,
+            { scale: 1 },
+            {
+              scale: 1.15,
+              ease: "none",
+              scrollTrigger: {
+                trigger: panel,
+                containerAnimation: scrollTween,
+                start: "left right",
+                end: "right left",
+                scrub: true,
+              },
+            },
+          );
+        });
+      });
+
+      return () => mm.revert();
+    }, section);
+
+    return () => ctx.revert();
   }, []);
 
   return (
