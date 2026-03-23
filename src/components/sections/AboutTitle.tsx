@@ -1,4 +1,4 @@
-const About = () => {
+const AboutTitle = () => {
   return (
     <section
       className="relative h-screen flex items-center justify-center"
@@ -19,4 +19,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default AboutTitle;

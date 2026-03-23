@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useScroll, useTransform } from "framer-motion";
 import { workData } from "@/data/workData";
-import WorkProject from "./workProject";
+import WorkSectionCard from "./workSectionCard";
 const PEEK_PX = 5;
 const CARD_GAP_PX = 16;
 const NAVBAR_CLEARANCE_PX = 90;
@@ -101,7 +101,7 @@ const WorkSection = () => {
         );
 
         return (
-          <WorkProject
+          <WorkSectionCard
             key={item.id}
             items={item}
             scale={scale}

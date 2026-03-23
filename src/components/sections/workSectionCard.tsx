@@ -9,7 +9,7 @@ type WorkProjectProps = {
   zIndex: number;
 };
 
-const WorkProject = ({ items, scale, y, stickyTop, zIndex }: WorkProjectProps) => {
+const WorkSectionCard = ({ items, scale, y, stickyTop, zIndex }: WorkProjectProps) => {
   return (
     <div
       className="sticky flex items-start justify-center"
@@ -104,4 +104,4 @@ const WorkProject = ({ items, scale, y, stickyTop, zIndex }: WorkProjectProps) =
   );
 };
 
-export default WorkProject;
+export default WorkSectionCard;
