@@ -156,7 +156,7 @@ useEffect(() => {
     };
   }, []);
   return (
-    <section ref={sectionRef} className="relative py-32">
+    <section ref={sectionRef} className="relative py-32 ">
       {/* Noise background */}
       <LoadingNoiseBg className="-z-10 bg-black opacity-97 pointer-events-none transform-gpu will-change-transform" />
       <div className="relative z-10 max-w-7xl mx-auto px-[clamp(2rem,8vw,6rem)] pb-64">

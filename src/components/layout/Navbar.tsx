@@ -1,29 +1,84 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { navbar } from "../../data/navbar";
 import { Button } from "../ui/button";
 import { Menu, X } from "lucide-react";
 import LiveClock from "../ui/LiveClock";
+import NoiseBackground from "../ui/NoiseBackground";
 import { scrollToSection } from "@/hooks/scrollToSection";
+import { motion, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
+
+  // --- Framer Motion Animation Variants ---
+  const menuEase: [number, number, number, number] = [0.76, 0, 0.24, 1];
+  const itemEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+  const menuVariants: Variants = {
+    closed: {
+      opacity: 0,
+      y: "-100%", // Slides up and out
+      transition: { duration: 0.7, ease: menuEase }, // Custom smooth easing
+    },
+    open: {
+      opacity: 1,
+      y: "0%", // Slides down into view
+      transition: { duration: 0.7, ease: menuEase },
+    },
+  };
+
+  const containerVariants: Variants = {
+    closed: { opacity: 0 },
+    open: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }, // Creates the 1-by-1 effect
+    },
+  };
+
+  const itemVariants: Variants = {
+    closed: { opacity: 0, y: 40 }, // Starts hidden and pushed down
+    open: { opacity: 1, y: 0, transition: { duration: 0.5, ease: itemEase } },
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-[clamp(1rem,5vw,3.5rem)] py-[clamp(1rem,5vw,3.5rem)] transition-transform duration-500 ease-out translate-y-0">
-      <div className="flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 z-50 px-[clamp(1rem,5vw,3.5rem)] py-[clamp(1rem,5vw,3.5rem)]">
+      {/* Make sure this top bar stays above the overlay with relative z-50 */}
+      <div className="flex items-center justify-between relative z-50">
+        {/* Logo */}
         <Button
           variant="link"
           onClick={() => scrollToSection("hero", setIsMenuOpen)}
-          className="text-[clamp(1.25rem,2.5vw,1.5625rem)] font-extrabold text-text hover:opacity-80 transition-opacity z-50"
+          className="text-[clamp(1.25rem,2.5vw,1.5625rem)] font-extrabold text-text hover:opacity-80 transition-opacity"
         >
           Lyhour.
         </Button>
+
+        {/* Desktop Clock */}
         <div className="hidden lg:block absolute left-1/2 -translate-x-1/2">
           <div className="text-[clamp(1rem,2vw,1.25rem)] font-light whitespace-nowrap text-text">
             <LiveClock />
           </div>
         </div>
+
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center">
           {navbar.map(({ href, text }) => (
             <Button
@@ -37,31 +92,66 @@ const Navbar = () => {
             </Button>
           ))}
         </nav>
+
+        {/* Mobile Toggle Button */}
         <Button
           variant="link"
           onClick={toggleMenu}
-          className="md:hidden p-2 text-gray-700 hover:text-gray-900 font-inter_regular"
+          className="md:hidden p-2 text-text hover:opacity-80 font-inter_regular"
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </Button>
-        {isMenuOpen && (
-          <div className="absolute top-full left-0 right-0 flex flex-col items-center gap-4 py-4 md:hidden">
-            <div className="h-full flex flex-col items-center justify-center gap-8">
-              {navbar.map(({ href, text }) => (
-                <Button
-                  variant="link"
-                  key={href}
-                  className="text-[clamp(2.5rem,10vw,4rem)] font-extrabold text-text hover:text-text/70 transition-colors cursor-pointer"
-                  onClick={() => scrollToSection(href, setIsMenuOpen)}
-                >
-                  {text}
-                </Button>
-              ))}
-              <LiveClock className="text-text/50 font-light text-sm tracking-wider mt-12" />
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Mobile Full-Screen Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
+            // Use fixed inset-0 and 100dvh to cover mobile screens accurately, -z-10 keeps it behind the logo/toggle
+            className="fixed inset-0 h-dvh w-full bg-[#EAEAEA]/95 flex flex-col items-center justify-center -z-10 md:hidden overflow-hidden"
+          >
+            <NoiseBackground className="opacity-30" />
+            <motion.div
+              variants={containerVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="relative z-10 flex flex-col items-center justify-center gap-10 w-full"
+            >
+              {navbar.map(({ href, text }) => (
+                <motion.div
+                  key={href}
+                  variants={itemVariants}
+                  className="overflow-hidden"
+                >
+                  <Button
+                    variant="link"
+                    className="text-[clamp(2.5rem,10vw,4rem)] font-extrabold text-[#111] hover:text-[#111]/70 transition-colors cursor-pointer"
+                    onClick={() => {
+                      toggleMenu();
+                      // Wait a fraction of a second for the menu to start closing before scrolling to avoid lag
+                      setTimeout(
+                        () => scrollToSection(href, setIsMenuOpen),
+                        300,
+                      );
+                    }}
+                  >
+                    {text}
+                  </Button>
+                </motion.div>
+              ))}
+
+              <motion.div variants={itemVariants}>
+                <LiveClock className="text-[#111]/50 font-light text-sm tracking-wider mt-8" />
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
