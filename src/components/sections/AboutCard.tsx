@@ -15,38 +15,37 @@ export function AboutSection() {
     const section = sectionRef.current;
     const slider = sliderRef.current;
     if (!section || !slider) return;
-
     const ctx = gsap.context(() => {
       const panels = slider.querySelectorAll<HTMLDivElement>(".about-panel");
-      const images = slider.querySelectorAll<HTMLImageElement>(".about-panel-img");
-      
-      // Calculate based on index, not vw for better transform performance
-      const totalMove = -100 * (panels.length - 1); 
+      const images =
+        slider.querySelectorAll<HTMLImageElement>(".about-panel-img");
+      const totalWidth = (panels.length - 1) * 100;
 
-      // Only force3D on the main container to save mobile GPU memory. 
-      // Applying it to every image can actually cause lag on lower-end phones.
-      gsap.set(slider, { force3D: true });
+      // Promote frequently animated layers to their own compositor layer.
+      gsap.set([slider, ...images], {
+        force3D: true,
+        willChange: "transform",
+        backfaceVisibility: "hidden",
+      });
 
       const mm = gsap.matchMedia();
 
-      // --- MOBILE SETUP (< 1024px) ---
       mm.add("(max-width: 1023px)", () => {
         const scrollTween = gsap.to(slider, {
-          xPercent: totalMove, // Use xPercent instead of vw
+          x: () => `-${totalWidth}vw`,
           ease: "none",
           scrollTrigger: {
             trigger: section,
             pin: true,
             anticipatePin: 1,
-            scrub: true, // Use true instead of 0.55 to prevent interpolation lag
+            scrub: 0.55,
             start: "top top",
-            end: () => `+=${slider.offsetWidth}`, // Tie end directly to DOM width
+            end: () => `+=${totalWidth * 6}vw`,
             invalidateOnRefresh: true,
+            fastScrollEnd: true,
           },
         });
 
-        // HIGHLY RECOMMENDED: Disable the nested image scaling on mobile.
-        // If you absolutely must have it, use true scrubbing without delays.
         images.forEach((img) => {
           const panel = img.closest(".about-panel");
           if (!panel) return;
@@ -55,31 +54,31 @@ export function AboutSection() {
             img,
             { scale: 1 },
             {
-              scale: 1.05, // Reduce scale amount for better performance
+              scale: 1.1,
               ease: "none",
               scrollTrigger: {
                 trigger: panel,
                 containerAnimation: scrollTween,
                 start: "left right",
                 end: "right left",
-                scrub: true, // No decimals on mobile
+                scrub: 0.45,
+                fastScrollEnd: true,
               },
-            }
+            },
           );
         });
       });
 
-      // --- DESKTOP SETUP (>= 1024px) ---
       mm.add("(min-width: 1024px)", () => {
         const scrollTween = gsap.to(slider, {
-          xPercent: totalMove,
+          x: () => `-${totalWidth}vw`,
           ease: "none",
           scrollTrigger: {
             trigger: section,
             pin: true,
-            scrub: 1, // Desktops can handle the interpolation
+            scrub: 1,
             start: "top top",
-            end: () => `+=${slider.offsetWidth * 2}`, // Extend scroll area for smoothness
+            end: () => `+=${totalWidth * 7}vw`,
             invalidateOnRefresh: true,
           },
         });
@@ -101,7 +100,7 @@ export function AboutSection() {
                 end: "right left",
                 scrub: true,
               },
-            }
+            },
           );
         });
       });
