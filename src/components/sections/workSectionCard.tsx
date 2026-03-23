@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion, type MotionValue } from "framer-motion";
 import type { workProjectType } from "@/types";
 
@@ -7,6 +8,7 @@ type WorkProjectProps = {
   y: MotionValue<string>;
   stickyTop: number; // px — larger = more buried in the stack
   zIndex: number;
+  index: number; // ADDED: Need this to check if it's the first card
 };
 
 const WorkSectionCard = ({
@@ -15,8 +17,12 @@ const WorkSectionCard = ({
   y,
   stickyTop,
   zIndex,
+  index, // ADDED
 }: WorkProjectProps) => {
   const isExternalLink = /^https?:\/\//.test(items.link);
+  
+  // ADDED: State to track when the image finishes downloading
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
     <div
@@ -32,8 +38,6 @@ const WorkSectionCard = ({
           scale,
           y,
           transformOrigin: "top center",
-          // Card height shrinks so buried cards don't overflow the viewport bottom.
-          // stickyTop accounts for the peek offset; +32 adds a small bottom gap.
           height: `calc(100vh - ${stickyTop + 32}px)`,
         }}
         className="relative w-[calc(100vw-4rem)] lg:w-[calc(100vw-16rem)] rounded-3xl overflow-hidden pointer-events-auto"
@@ -43,9 +47,8 @@ const WorkSectionCard = ({
           style={{ backgroundColor: "#2A2A2A" }}
         >
           <div className="absolute inset-0 flex flex-col lg:flex-row">
-            {/* ── LEFT: Text ── */}
+            {/* ── LEFT: Text (Unchanged) ── */}
             <div className="flex-1 p-8 lg:p-16 xl:p-24 flex flex-col justify-between">
-              {/* Top meta */}
               <div className="flex items-center gap-4">
                 <span className="text-white/40 font-light text-sm tracking-wider">
                   {items.id}
@@ -56,7 +59,6 @@ const WorkSectionCard = ({
                 </span>
               </div>
 
-              {/* Center: category + heading + description */}
               <div className="flex-1 flex flex-col justify-center">
                 <span className="text-white/40 font-light text-sm tracking-wider uppercase mb-6 block">
                   {items.title}
@@ -75,7 +77,6 @@ const WorkSectionCard = ({
                 </p>
               </div>
 
-              {/* Bottom: links */}
               <div className="flex items-center gap-6">
                 <a
                   href={items.link}
@@ -96,15 +97,27 @@ const WorkSectionCard = ({
               </div>
             </div>
 
-            {/* ── RIGHT: Image ── */}
-            <div className="flex-1 relative overflow-hidden rounded-r-3xl">
+            {/* ── RIGHT: Image (Updated with Skeleton & Fade) ── */}
+            <div className="flex-1 relative overflow-hidden rounded-r-3xl bg-[#1a1a1a]">
               <div className="absolute inset-0">
+                
+                {/* 1. Skeleton Pulse Background */}
+                <div 
+                  className={`absolute inset-0 bg-white/5 animate-pulse transition-opacity duration-500 ${
+                    isImageLoaded ? "opacity-0" : "opacity-100"
+                  }`} 
+                />
+
+                {/* 2. Actual Image */}
                 <img
                   src={items.image}
                   alt={items.heading}
-                  loading="lazy"
+                  loading={index === 0 ? "eager" : "lazy"} // Eager load the very first one
                   decoding="async"
-                  className="w-full h-full object-cover"
+                  onLoad={() => setIsImageLoaded(true)} // Trigger fade-in when ready
+                  className={`w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+                    isImageLoaded ? "opacity-100" : "opacity-0"
+                  }`}
                 />
               </div>
             </div>
