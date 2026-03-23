@@ -11,6 +11,8 @@ import type { Variants } from "framer-motion";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOverWorkSection, setIsOverWorkSection] = useState(false);
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -28,6 +30,27 @@ const Navbar = () => {
       document.body.style.overflow = "unset";
     };
   }, [isMenuOpen]);
+
+  useEffect(() => {
+    const handleScrollDirection = () => {
+      const currentScrollY = window.scrollY;
+      if (isMenuOpen) {
+        setIsNavbarVisible(true);
+        return;
+      }
+      if (currentScrollY > lastScrollY + 10) {
+        setIsNavbarVisible(false);
+      } else if (currentScrollY < lastScrollY - 10) {
+        setIsNavbarVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScrollDirection, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScrollDirection);
+    };
+  }, [lastScrollY, isMenuOpen]);
 
   useEffect(() => {
     const handleScrollTheme = () => {
@@ -98,7 +121,11 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-[clamp(1rem,5vw,3.5rem)] py-[clamp(1rem,5vw,3.5rem)]">
+    <motion.header
+      animate={{ y: isNavbarVisible ? 0 : -120 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="fixed top-0 left-0 right-0 z-50 px-[clamp(1rem,5vw,3.5rem)] py-[clamp(1rem,5vw,3.5rem)]"
+    >
       {/* Make sure this top bar stays above the overlay with relative z-50 */}
       <div className="flex items-center justify-between relative z-50">
         {/* Logo */}
@@ -193,7 +220,7 @@ const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 };
 
