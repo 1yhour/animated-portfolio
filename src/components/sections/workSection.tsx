@@ -2,7 +2,9 @@ import { useRef } from "react";
 import { useScroll, useTransform } from "framer-motion";
 import { workData } from "@/data/workData";
 import WorkProject from "./workProject";
-const PEEK_PX = 48;
+const PEEK_PX = 5;
+const CARD_GAP_PX = 16;
+const NAVBAR_CLEARANCE_PX = 90;
 
 const WorkSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,14 +19,21 @@ const WorkSection = () => {
   });
 
   return (
-    <section id="work-link"
+    <section
+      id="work-link"
       ref={containerRef}
       style={{ height: `${TOTAL_SLOTS * 100}vh` }}
     >
       {/* ── Slot 0: Work heading ─────────────────────────────────────────
           Lowest z-index. Cards slide over it.
           No peek offset needed — it lives beneath the whole stack.        */}
-      <div className="sticky top-0 h-screen flex items-center justify-center z-0">
+      <div
+        className="sticky flex items-center justify-center z-0"
+        style={{
+          top: NAVBAR_CLEARANCE_PX,
+          height: `calc(100vh - ${NAVBAR_CLEARANCE_PX}px)`,
+        }}
+      >
         <div className="text-center px-8">
           <span className="text-neutral-900/50 font-light text-sm tracking-[0.3em] uppercase block mb-6">
             SELECTED
@@ -50,6 +59,7 @@ const WorkSection = () => {
         const total = workData.length;
         const isLast = index === total - 1;
         const cardsAbove = total - 1 - index; // cards that will stack on top
+        
 
         /**
          * stickyTop:
@@ -60,8 +70,7 @@ const WorkSection = () => {
          * This means card 1's top edge is 48px above card 0's top edge,
          * so 48px of card 0 peeks above card 1. Same logic for all layers.
          */
-        const stickyTop = cardsAbove * PEEK_PX;
-
+        const stickyTop = NAVBAR_CLEARANCE_PX + cardsAbove * PEEK_PX + CARD_GAP_PX;
         /**
          * translateY: card enters from off-screen bottom → rests at 0
          * Happens strictly during this card's scroll slot.
@@ -73,7 +82,7 @@ const WorkSection = () => {
         const y = useTransform(
           scrollYProgress,
           [enterStart, enterEnd],
-          ["100%", "0%"]
+          ["100%", "0%"],
         );
 
         /**
@@ -88,7 +97,7 @@ const WorkSection = () => {
         const scale = useTransform(
           scrollYProgress,
           isLast ? [0, 1] : [scaleStart, 1],
-          isLast ? [1, 1] : [1, targetScale]
+          isLast ? [1, 1] : [1, targetScale],
         );
 
         return (
