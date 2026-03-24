@@ -14,10 +14,10 @@ export function ProcessSection() {
   const dotRef = useRef<HTMLDivElement>(null); // moving dot
   // Array of refs — one per ProcessItem, populated via callback ref
   const itemsRef = useRef<HTMLDivElement[]>([]);
-useEffect(() => {
-    const section  = sectionRef.current;
+  useEffect(() => {
+    const section = sectionRef.current;
     const progress = progressRef.current;
-    const dot      = dotRef.current;
+    const dot = dotRef.current;
     if (!section || !progress || !dot) return;
     let mm: gsap.MatchMedia | null = null;
 
@@ -74,7 +74,7 @@ useEffect(() => {
                 end: "top 40%",
                 toggleActions: "play none none reverse",
               },
-            }
+            },
           );
 
           const rule = item.querySelector(".process-rule");
@@ -91,7 +91,7 @@ useEffect(() => {
                   start: "bottom 80%",
                   toggleActions: "play none none reverse",
                 },
-              }
+              },
             );
           }
         });
@@ -99,7 +99,7 @@ useEffect(() => {
 
       // ── MOBILE (< 1024px) ──
       mm.add("(max-width: 1023px)", () => {
-        // Hide the desktop vertical progress line elements
+        // Keep everything static on mobile (no scroll-triggered animation)
         gsap.set(progress, { scaleY: 1 });
         gsap.set(dot, { y: 0 });
 
@@ -107,47 +107,21 @@ useEffect(() => {
           if (!item) return;
           const textEls = item.querySelectorAll(".process-animate");
 
-          // Force hardware acceleration before animating on mobile
-          gsap.set(textEls, { force3D: true, willChange: "transform, opacity" });
-
-          gsap.fromTo(
-            textEls,
-            { opacity: 0, y: 20 }, // Smaller travel distance for mobile performance
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.6, // Slightly faster to feel snappy on touch
-              ease: "power2.out",
-              stagger: 0.05, // Tighter stagger
-              scrollTrigger: {
-                trigger: item,
-                start: "top 85%", // Trigger slightly earlier on mobile
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
+          gsap.set(textEls, {
+            opacity: 1,
+            y: 0,
+            clearProps: "transform,willChange",
+          });
 
           const rule = item.querySelector(".process-rule");
           if (rule) {
-            gsap.set(rule, { force3D: true, willChange: "transform" });
-            gsap.fromTo(
-              rule,
-              { scaleX: 0 },
-              {
-                scaleX: 1,
-                duration: 0.6,
-                ease: "power2.out",
-                scrollTrigger: {
-                  trigger: item,
-                  start: "top 85%",
-                  toggleActions: "play none none reverse",
-                },
-              }
-            );
+            gsap.set(rule, {
+              scaleX: 1,
+              clearProps: "transform,willChange",
+            });
           }
         });
       });
-
     }, section);
 
     return () => {
