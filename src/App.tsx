@@ -10,6 +10,7 @@ import WorkSection from "./components/sections/workSection";
 import ProcessTitle from "./components/sections/ProcessTitle";
 import { ContactSection } from "./components/sections/contactMe";
 import CustomInteractiveCursor from "./components/ui/CustomInteractiveCursor";
+import PageProgressBar from "./components/ui/PageProgressBar";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,7 @@ const App = () => {
   return (
     <div className="relative isolate min-h-screen bg-[#f4f4f4] text-neutral-900">
       <CustomInteractiveCursor />
+      <PageProgressBar hidden={loading} />
       {loading && (
         <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
           <LoadingScreen onComplete={() => setLoading(false)} />
