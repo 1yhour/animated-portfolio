@@ -132,7 +132,7 @@ const Navbar = () => {
         <Button
           variant="link"
           onClick={() => scrollToSection("hero", setIsMenuOpen)}
-          className={`text-[clamp(1.25rem,2.5vw,1.5625rem)] font-extrabold hover:opacity-80 transition-[color,opacity] duration-300 ${navToneClass}`}
+          className={`text-[clamp(1.25rem,2.5vw,1.5625rem)] font-extrabold hover:opacity-80 transition-[color,opacity] duration-300 cursor-none ${navToneClass}`}
         >
           Lyhour.
         </Button>
@@ -153,7 +153,7 @@ const Navbar = () => {
               key={href}
               variant="link"
               onClick={() => scrollToSection(href, setIsMenuOpen)}
-              className={`text-[clamp(1rem,2.5vw,1.5625rem)] font-light px-[clamp(0.25rem,1vw,0.5rem)] group cursor-pointer transition-colors duration-300 ${navToneClass}`}
+              className={`text-[clamp(1rem,2.5vw,1.5625rem)] font-light px-[clamp(0.25rem,1vw,0.5rem)] group cursor-none transition-colors duration-300 ${navToneClass}`}
             >
               {text}
               <span className="opacity-50 ml-1">/</span>
@@ -198,7 +198,7 @@ const Navbar = () => {
                 >
                   <Button
                     variant="link"
-                    className="text-[clamp(2.5rem,10vw,4rem)] font-extrabold text-[#111] hover:text-[#111]/70 transition-colors cursor-pointer"
+                    className="text-[clamp(2.5rem,10vw,4rem)] font-extrabold text-[#111] hover:text-[#111]/70 transition-colors cursor-none"
                     onClick={() => {
                       toggleMenu();
                       // Wait a fraction of a second for the menu to start closing before scrolling to avoid lag

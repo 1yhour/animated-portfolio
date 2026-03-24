@@ -8,13 +8,15 @@ import { AboutSection } from "./components/sections/AboutCard";
 import { ProcessSection } from "./components/sections/WorkProcess";
 import WorkSection from "./components/sections/workSection";
 import ProcessTitle from "./components/sections/ProcessTitle";
+import { ContactSection } from "./components/sections/contactMe";
+import CustomInteractiveCursor from "./components/ui/CustomInteractiveCursor";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
 
   return (
-   
     <div className="relative isolate min-h-screen bg-[#f4f4f4] text-neutral-900">
+      <CustomInteractiveCursor />
       {loading && (
         <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
           <LoadingScreen onComplete={() => setLoading(false)} />
@@ -29,17 +31,16 @@ const App = () => {
           <div className="relative overflow-hidden">
             <Hero />
             <AboutTitle />
-            <AboutSection />  
-            <ProcessTitle/>
+            <AboutSection />
+            <ProcessTitle />
             <ProcessSection />
-            
           </div>
 
-         
           <WorkSection />
         </main>
 
         <footer className="relative">
+          <ContactSection />
         </footer>
       </div>
     </div>

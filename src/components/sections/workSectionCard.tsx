@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, type MotionValue } from "framer-motion";
 import type { workProjectType } from "@/types";
+import { scrollToSection } from "@/hooks/scrollToSection";
 
 type WorkProjectProps = {
   items: workProjectType;
@@ -19,8 +20,6 @@ const WorkSectionCard = ({
   zIndex,
   index, // ADDED
 }: WorkProjectProps) => {
-  const isExternalLink = /^https?:\/\//.test(items.link);
-  
   // ADDED: State to track when the image finishes downloading
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
@@ -78,34 +77,32 @@ const WorkSectionCard = ({
               </div>
 
               <div className="flex items-center gap-6">
-                <a
-                  href={items.link}
-                  target={isExternalLink ? "_blank" : undefined}
-                  rel={isExternalLink ? "noopener noreferrer" : undefined}
+                <button
+                  type="button"
+                  onClick={() => scrollToSection("contact-link")}
                   className="group inline-flex items-center gap-8 font-medium text-sm hover:gap-5 transition-all duration-300"
                 >
                   {items.linkText?.map((link, i) => (
                     <span
                       key={i}
-                      className="flex items-center gap-2 text-white"
+                      className="flex items-center gap-2 text-white border-b border-white/30 pb-0.5 cursor-none"
                     >
                       {link.text}
                       {link.icon && <link.icon />}
                     </span>
                   ))}
-                </a>
+                </button>
               </div>
             </div>
 
             {/* ── RIGHT: Image (Updated with Skeleton & Fade) ── */}
             <div className="flex-1 relative overflow-hidden rounded-r-3xl bg-[#1a1a1a]">
               <div className="absolute inset-0">
-                
                 {/* 1. Skeleton Pulse Background */}
-                <div 
+                <div
                   className={`absolute inset-0 bg-white/5 animate-pulse transition-opacity duration-500 ${
                     isImageLoaded ? "opacity-0" : "opacity-100"
-                  }`} 
+                  }`}
                 />
 
                 {/* 2. Actual Image */}
