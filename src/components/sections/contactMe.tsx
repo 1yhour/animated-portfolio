@@ -90,7 +90,7 @@ export const ContactSection = () => {
           <footer className="border-t border-white/10 pt-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             <div className="flex flex-col gap-2">
               <span className="text-2xl font-extrabold">Lyhour.</span>
-              <span className="text-white/40 font-light text-sm mb-8">
+              <span className="text-white/40 font-light text-sm mb-2">
                 © 2026 All rights reserved.
               </span>
             </div>
