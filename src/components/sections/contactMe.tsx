@@ -49,7 +49,7 @@ export const ContactSection = () => {
               {/* Tailwind Group Hover Effect */}
               <a
                 href="mailto:lyhourlucky77@gmail.com"
-                className="group inline-flex items-center gap-4 text-xl font-medium hover:gap-6 transition-all duration-300"
+                className="group inline-flex items-center gap-4 text-xl font-medium hover:gap-6 transition-all duration-300 cursor-none"
               >
                 <span className="border-b border-white/40 pb-1">
                   lyhourlucky77@gmail.com
@@ -67,7 +67,7 @@ export const ContactSection = () => {
                 <li>
                   <a
                     href="https://www.linkedin.com/in/seng-lyhour-607051383/"
-                    className="text-white/70 hover:text-white transition-colors border-b border-white/40 pb-1"
+                    className="text-white/70 hover:text-white transition-colors border-b border-white/40 pb-1 cursor-none"
                     target="_blank"
                   >
                     LinkedIn
@@ -76,7 +76,7 @@ export const ContactSection = () => {
                 <li>
                   <a
                     href="https://github.com/1yhour"
-                    className="text-white/70 hover:text-white transition-colors border-b border-white/40 pb-1"
+                    className="text-white/70 hover:text-white transition-colors border-b border-white/40 pb-1 cursor-none"
                     target="_blank"
                   >
                     GitHub
@@ -100,7 +100,7 @@ export const ContactSection = () => {
             </div>
 
             {/* Back to top with Group Hover */}
-            <button className="flex items-center gap-2 text-white/60 hover:text-white transition-colors group"
+            <button className="flex items-center gap-2 text-white/60 hover:text-white transition-colors group cursor-none"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               <span className="font-light text-sm">Back to Top</span>
               <IoIosArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
