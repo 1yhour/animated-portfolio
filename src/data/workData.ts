@@ -23,7 +23,7 @@ export const workData: workProjectType[] = [
     heading: "Portfolio",
     description:
       "A personal space to showcase my work, share my design philosophy, and connect with people who appreciate thoughtful digital experiences.",
-    link: "/contact-link",
+    link: "contact-link",
     linkText: [{ text: "Let's Talk", icon: GrLinkNext }],
     image: MyPorfotlio,
   },
@@ -34,7 +34,7 @@ export const workData: workProjectType[] = [
     heading: "Your Project?",
     description:
       "Got an idea that's been sitting in a notes app for too long? Let's build it. I'm open to freelance work, collaborations, or just a conversation about what's possible.",
-    link: "/contact",
+    link: "contact-link",
     linkText: [{ text: "Let's Talk", icon: GrLinkNext }],
     image: TeamProject,
   },
