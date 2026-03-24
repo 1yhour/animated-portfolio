@@ -14,127 +14,124 @@ export function ProcessSection() {
   const dotRef = useRef<HTMLDivElement>(null); // moving dot
   // Array of refs — one per ProcessItem, populated via callback ref
   const itemsRef = useRef<HTMLDivElement[]>([]);
+
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+
+    // ── MOBILE: skip all GSAP/ScrollTrigger setup entirely ──
+    // Directly set final styles via the DOM to avoid any GSAP overhead
+    if (isMobile) {
+      if (progressRef.current) {
+        progressRef.current.style.transform = "scaleY(1)";
+      }
+      if (dotRef.current) {
+        dotRef.current.style.transform = "translateY(0)";
+      }
+      itemsRef.current.forEach((item) => {
+        if (!item) return;
+        item.querySelectorAll<HTMLElement>(".process-animate").forEach((el) => {
+          el.style.opacity = "1";
+          el.style.transform = "translateY(0)";
+        });
+        const rule = item.querySelector<HTMLElement>(".process-rule");
+        if (rule) {
+          rule.style.transform = "scaleX(1)";
+        }
+      });
+      return; // Exit early — no GSAP context, no ScrollTrigger listeners
+    }
+
+    // ── DESKTOP: full GSAP + ScrollTrigger setup ──
     const section = sectionRef.current;
     const progress = progressRef.current;
     const dot = dotRef.current;
     if (!section || !progress || !dot) return;
-    let mm: gsap.MatchMedia | null = null;
 
     const ctx = gsap.context(() => {
-      mm = gsap.matchMedia();
+      const CYCLE = 1;
 
-      // ── DESKTOP (>= 1024px) ──
-      mm.add("(min-width: 1024px)", () => {
-        const CYCLE = 1;
+      // Animate the vertical progress fill bar
+      const tl = gsap.timeline();
+      tl.to(progress, {
+        scaleY: 1,
+        ease: "none",
+      });
 
-        const tl = gsap.timeline();
-        tl.to(progress, {
-          scaleY: 1,
-          ease: "none",
-        });
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 10%",
+        end: "bottom 80%",
+        scrub: CYCLE,
+        animation: tl,
+      });
 
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top 10%",
-          end: "bottom 80%",
-          scrub: CYCLE,
-          animation: tl,
-        });
+      // Move the dot along the progress line
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 10%",
+        end: "bottom 80%",
+        scrub: CYCLE,
+        onUpdate: (self) => {
+          const line = progress.parentElement;
+          if (!line) return;
+          const lineHeight = line.getBoundingClientRect().height;
+          gsap.set(dot, { y: self.progress * lineHeight });
+        },
+      });
 
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top 10%",
-          end: "bottom 80%",
-          scrub: CYCLE,
-          onUpdate: (self) => {
-            const line = progress.parentElement;
-            if (!line) return;
-            const lineHeight = line.getBoundingClientRect().height;
-            gsap.set(dot, { y: self.progress * lineHeight });
+      // Animate each ProcessItem on scroll
+      itemsRef.current.forEach((item) => {
+        if (!item) return;
+        const textEls = item.querySelectorAll(".process-animate");
+
+        gsap.fromTo(
+          textEls,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: item,
+              start: "top 75%",
+              end: "top 40%",
+              toggleActions: "play none none reverse",
+            },
           },
-        });
+        );
 
-        itemsRef.current.forEach((item) => {
-          if (!item) return;
-          const textEls = item.querySelectorAll(".process-animate");
-
+        const rule = item.querySelector(".process-rule");
+        if (rule) {
           gsap.fromTo(
-            textEls,
-            { opacity: 0, y: 40 },
+            rule,
+            { scaleX: 0 },
             {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
+              scaleX: 1,
+              duration: 1,
               ease: "power2.out",
-              stagger: 0.1,
               scrollTrigger: {
                 trigger: item,
-                start: "top 75%",
-                end: "top 40%",
+                start: "bottom 80%",
                 toggleActions: "play none none reverse",
               },
             },
           );
-
-          const rule = item.querySelector(".process-rule");
-          if (rule) {
-            gsap.fromTo(
-              rule,
-              { scaleX: 0 },
-              {
-                scaleX: 1,
-                duration: 1,
-                ease: "power2.out",
-                scrollTrigger: {
-                  trigger: item,
-                  start: "bottom 80%",
-                  toggleActions: "play none none reverse",
-                },
-              },
-            );
-          }
-        });
-      });
-
-      // ── MOBILE (< 1024px) ──
-      mm.add("(max-width: 1023px)", () => {
-        // Keep everything static on mobile (no scroll-triggered animation)
-        gsap.set(progress, { scaleY: 1 });
-        gsap.set(dot, { y: 0 });
-
-        itemsRef.current.forEach((item) => {
-          if (!item) return;
-          const textEls = item.querySelectorAll(".process-animate");
-
-          gsap.set(textEls, {
-            opacity: 1,
-            y: 0,
-            clearProps: "transform,willChange",
-          });
-
-          const rule = item.querySelector(".process-rule");
-          if (rule) {
-            gsap.set(rule, {
-              scaleX: 1,
-              clearProps: "transform,willChange",
-            });
-          }
-        });
+        }
       });
     }, section);
 
-    return () => {
-      mm?.revert();
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
+
   return (
-    <section ref={sectionRef} id="process-section" className="relative py-32 ">
-      {/* Noise background */}
-      <LoadingNoiseBg className="-z-10 bg-black opacity-97 pointer-events-none transform-gpu will-change-transform" />
+    <section ref={sectionRef} id="process-section" className="relative py-32">
+      {/* Noise background — GPU hints only on desktop to avoid mobile VRAM pressure */}
+      <LoadingNoiseBg className="-z-10 bg-black opacity-95 pointer-events-none lg:transform-gpu lg:will-change-transform" />
+
       <div className="relative z-10 max-w-7xl mx-auto px-[clamp(2rem,8vw,6rem)] pb-64">
-        {/* ── Vertical progress line ── */}
+        {/* ── Vertical progress line (desktop only) ── */}
         <div
           className="hidden lg:block absolute top-0 bottom-[16rem] w-px"
           style={{ left: "calc(clamp(2rem, 8vw, 6rem) + 1.5rem)" }}
@@ -150,7 +147,7 @@ export function ProcessSection() {
           />
         </div>
 
-        {/* ── Moving dot ── */}
+        {/* ── Moving dot (desktop only) ── */}
         <div
           ref={dotRef}
           className="hidden lg:block absolute z-10"
@@ -161,7 +158,8 @@ export function ProcessSection() {
         >
           <div className="relative">
             <div className="w-3 h-3 rounded-full bg-white" />
-            <div className="absolute inset-0 w-3 h-3 rounded-full bg-white/30 animate-ping" />
+            {/* animate-ping only rendered on desktop — avoids idle CSS animation on mobile */}
+            <div className="hidden lg:block absolute inset-0 w-3 h-3 rounded-full bg-white/30 animate-ping" />
           </div>
         </div>
 
@@ -179,6 +177,8 @@ export function ProcessSection() {
             />
           ))}
         </div>
+
+        {/* ── Large decorative "PROCESS" watermark (xl only) ── */}
         <div className="absolute top-1/2 right-[clamp(2rem,8vw,6rem)] -translate-y-1/2 pointer-events-none hidden xl:block">
           <span
             className="font-extrabold select-none leading-none text-white/[0.02]"
