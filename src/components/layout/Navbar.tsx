@@ -1,43 +1,19 @@
 import { useState, useEffect } from "react";
 import { navbar } from "../../data/navbar";
 import { Button } from "../ui/button";
-import { Menu, X } from "lucide-react";
 import LiveClock from "../ui/LiveClock";
-import NoiseBackground from "../ui/NoiseBackground";
 import { scrollToSection } from "@/hooks/scrollToSection";
-import { motion, AnimatePresence } from "framer-motion";
-import type { Variants } from "framer-motion";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOverWorkSection, setIsOverWorkSection] = useState(false);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    // Cleanup function
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isMenuOpen]);
-
   useEffect(() => {
     const handleScrollDirection = () => {
       const currentScrollY = window.scrollY;
-      if (isMenuOpen) {
-        setIsNavbarVisible(true);
-        return;
-      }
+
       if (currentScrollY > lastScrollY + 10) {
         setIsNavbarVisible(false);
       } else if (currentScrollY < lastScrollY - 10) {
@@ -50,7 +26,7 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", handleScrollDirection);
     };
-  }, [lastScrollY, isMenuOpen]);
+  }, [lastScrollY]);
 
   useEffect(() => {
     const handleScrollTheme = () => {
@@ -84,142 +60,46 @@ const Navbar = () => {
     };
   }, []);
 
-  const navToneClass = isMenuOpen
-    ? "text-[#111]"
-    : isOverWorkSection
-      ? "text-white"
-      : "text-text";
-
-  // --- Framer Motion Animation Variants ---
-  const menuEase: [number, number, number, number] = [0.76, 0, 0.24, 1];
-  const itemEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-  const menuVariants: Variants = {
-    closed: {
-      opacity: 0,
-      y: "-100%", // Slides up and out
-      transition: { duration: 0.7, ease: menuEase }, // Custom smooth easing
-    },
-    open: {
-      opacity: 1,
-      y: "0%", // Slides down into view
-      transition: { duration: 0.7, ease: menuEase },
-    },
-  };
-
-  const containerVariants: Variants = {
-    closed: { opacity: 0 },
-    open: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 }, // Creates the 1-by-1 effect
-    },
-  };
-
-  const itemVariants: Variants = {
-    closed: { opacity: 0, y: 40 }, // Starts hidden and pushed down
-    open: { opacity: 1, y: 0, transition: { duration: 0.5, ease: itemEase } },
-  };
+  const navToneClass = isOverWorkSection ? "text-white" : "text-text";
+  const dockToneClass = isOverWorkSection
+    ? "bg-black/35 border-white/30"
+    : "bg-white/70 border-black/10";
 
   return (
     <motion.header
-      animate={{ y: isNavbarVisible ? 0 : -120 }}
+      animate={{ y: isNavbarVisible ? 0 : 100 }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
-      className="fixed top-0 left-0 right-0 z-50 px-[clamp(1rem,5vw,3.5rem)] py-[clamp(1rem,5vw,3.5rem)]"
+      className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2"
     >
-      {/* Make sure this top bar stays above the overlay with relative z-50 */}
-      <div className="flex items-center justify-between relative z-50">
-        {/* Logo */}
+      <div
+        className={`relative z-50 flex w-max max-w-[calc(100vw-1.5rem)] items-center gap-[clamp(0.35rem,1.4vw,0.85rem)] overflow-x-auto rounded-full border px-[clamp(0.65rem,1.8vw,1.1rem)] py-[clamp(0.45rem,1vw,0.7rem)] backdrop-blur-md shadow-[0_10px_35px_rgba(0,0,0,0.22)] ${dockToneClass} ${navToneClass}`}
+      >
         <Button
           variant="link"
-          onClick={() => scrollToSection("hero", setIsMenuOpen)}
-          className={`text-[clamp(1.25rem,2.5vw,1.5625rem)] font-extrabold hover:opacity-80 transition-[color,opacity] duration-300 cursor-none ${navToneClass}`}
+          onClick={() => scrollToSection("hero")}
+          className="whitespace-nowrap px-2 text-[clamp(0.9rem,2vw,1.1rem)] font-extrabold hover:opacity-80 transition-[color,opacity] duration-300 cursor-none"
         >
-          Lyhour.
+          Home.
         </Button>
 
-        {/* Desktop Clock */}
-        <div className="hidden lg:block absolute left-1/2 -translate-x-1/2">
-          <div
-            className={`text-[clamp(1rem,2vw,1.25rem)] font-light whitespace-nowrap transition-colors duration-300 ${navToneClass}`}
-          >
-            <LiveClock />
-          </div>
+        <div className="whitespace-nowrap px-2 text-[clamp(0.72rem,1.4vw,0.9rem)] font-light opacity-85">
+          <LiveClock />
         </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center">
+        <nav className="flex items-center">
           {navbar.map(({ href, text }) => (
             <Button
               key={href}
               variant="link"
-              onClick={() => scrollToSection(href, setIsMenuOpen)}
-              className={`text-[clamp(1rem,2.5vw,1.5625rem)] font-light px-[clamp(0.25rem,1vw,0.5rem)] group cursor-none transition-colors duration-300 ${navToneClass}`}
+              onClick={() => scrollToSection(href)}
+              className="whitespace-nowrap px-[clamp(0.2rem,0.8vw,0.45rem)] text-[clamp(0.78rem,1.5vw,0.95rem)] font-medium group cursor-none transition-colors duration-300"
             >
               {text}
               <span className="opacity-50 ml-1">/</span>
             </Button>
           ))}
         </nav>
-
-        {/* Mobile Toggle Button */}
-        <Button
-          variant="link"
-          onClick={toggleMenu}
-          className={`md:hidden p-2 hover:opacity-80 font-inter_regular transition-[color,opacity] duration-300 ${navToneClass}`}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </Button>
       </div>
-
-      {/* Mobile Full-Screen Menu Overlay */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={menuVariants}
-            // Use fixed inset-0 and 100dvh to cover mobile screens accurately, -z-10 keeps it behind the logo/toggle
-            className="fixed inset-0 h-dvh w-full bg-[#EAEAEA]/95 flex flex-col items-center justify-center -z-10 md:hidden overflow-hidden"
-          >
-            <NoiseBackground className="opacity-30" />
-            <motion.div
-              variants={containerVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="relative z-10 flex flex-col items-center justify-center gap-10 w-full"
-            >
-              {navbar.map(({ href, text }) => (
-                <motion.div
-                  key={href}
-                  variants={itemVariants}
-                  className="overflow-hidden"
-                >
-                  <Button
-                    variant="link"
-                    className="text-[clamp(2.5rem,10vw,4rem)] font-extrabold text-[#111] hover:text-[#111]/70 transition-colors cursor-none"
-                    onClick={() => {
-                      toggleMenu();
-                      // Wait a fraction of a second for the menu to start closing before scrolling to avoid lag
-                      setTimeout(
-                        () => scrollToSection(href, setIsMenuOpen),
-                        300,
-                      );
-                    }}
-                  >
-                    {text}
-                  </Button>
-                </motion.div>
-              ))}
-
-              <motion.div variants={itemVariants}>
-                <LiveClock className="text-[#111]/50 font-light text-sm tracking-wider mt-8" />
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.header>
   );
 };

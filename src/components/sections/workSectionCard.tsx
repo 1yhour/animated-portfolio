@@ -23,6 +23,15 @@ const WorkSectionCard = ({
   // ADDED: State to track when the image finishes downloading
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
+  const handleLinkClick = () => {
+    if (/^https?:\/\//i.test(items.link)) {
+      window.open(items.link, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    scrollToSection(items.link);
+  };
+
   return (
     <div
       className="sticky flex items-start justify-center pointer-events-none"
@@ -79,7 +88,7 @@ const WorkSectionCard = ({
               <div className="flex items-center gap-6">
                 <button
                   type="button"
-                  onClick={() => scrollToSection("contact-link")}
+                  onClick={handleLinkClick}
                   className="group inline-flex items-center gap-8 font-medium text-sm hover:gap-5 transition-all duration-300"
                 >
                   {items.linkText?.map((link, i) => (
