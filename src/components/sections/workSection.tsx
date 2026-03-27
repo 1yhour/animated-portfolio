@@ -48,33 +48,12 @@ const WorkSection = () => {
         </div>
       </div>
 
-      {/* ── Slots 1…N: Cards ─────────────────────────────────────────────
-          Key ideas:
-          1. stickyTop   — decreases per card → buried cards have larger top
-                           offsets, so their top strips peek above front card
-          2. z-index     — increases per card → later cards layer on top
-          3. y animation — each card slides from 100% → 0% during its slot
-      */}
       {workData.map((item, index) => {
         const total = workData.length;
         const isLast = index === total - 1;
-        const cardsAbove = total - 1 - index; // cards that will stack on top
-        
-
-        /**
-         * stickyTop:
-         *   card 0 (deepest): top = (N-1) × PEEK  →  e.g. 96px
-         *   card 1 (middle):  top = (N-2) × PEEK  →  e.g. 48px
-         *   card 2 (front):   top = 0              →  e.g. 0px
-         *
-         * This means card 1's top edge is 48px above card 0's top edge,
-         * so 48px of card 0 peeks above card 1. Same logic for all layers.
-         */
+        const cardsAbove = total - 1 - index; 
         const stickyTop = NAVBAR_CLEARANCE_PX + cardsAbove * PEEK_PX + CARD_GAP_PX;
-        /**
-         * translateY: card enters from off-screen bottom → rests at 0
-         * Happens strictly during this card's scroll slot.
-         */
+        
         const enterStart = (index + 1) * slotSize;
         const enterEnd = Math.min((index + 2) * slotSize, 1);
 
@@ -85,11 +64,7 @@ const WorkSection = () => {
           ["100%", "0%"],
         );
 
-        /**
-         * Subtle scale: top card is always 1.
-         * Buried cards compress very slightly for depth perception.
-         * SCALE_STEP kept small (0.04) — the peek does most of the visual work.
-         */
+
         const scaleStart = (index + 2) * slotSize;
         const targetScale = 1 - cardsAbove * 0.04;
 
@@ -107,7 +82,7 @@ const WorkSection = () => {
             scale={scale}
             y={y}
             stickyTop={stickyTop}
-            zIndex={(index + 1) * 10} index={0}          />
+            zIndex={(index + 1) * 10} index={0}/>
         );
       })}
     </section>

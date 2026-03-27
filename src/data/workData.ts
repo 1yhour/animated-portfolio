@@ -11,7 +11,7 @@ export const workData: workProjectType[] = [
     title: "AI / AUTOMATION",
     heading: "Chatbot",
     description:
-      "Most chatbots forget you the moment you refresh. This one doesn't. Built with React and the OpenAI API — multi-turn memory, markdown support, and a UI that doesn't look like a university assignment.",
+      "Persistent-memory chatbot built with Python and Google services. Supports multi-turn conversations, markdown, and a sleek, modern UI.",
     link: "https://github.com/1yhour/Chatbot",
     linkText: [{ text: "Github", icon: FaGithub }],
     image: Chabot,
