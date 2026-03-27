@@ -28,7 +28,7 @@ const Hero = () => {
           preload="metadata"
         >
           <source
-            src="/models/Vintage_Train_Window_Landscape_Video (1).webm"
+            src="/models/VIntage.webm"
             type="video/webm"
           />
         </video>
