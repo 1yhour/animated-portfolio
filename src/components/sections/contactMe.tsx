@@ -52,7 +52,7 @@ export const ContactSection = () => {
                 className="group inline-flex items-center gap-4 text-xl font-medium hover:gap-6 transition-all duration-300 cursor-none"
               >
                 <span className="border-b border-white/40 pb-1">
-                  lyhourlucky77@gmail.com
+                  lyhourcoding@gmail.com
                 </span>
                 <SiMinutemailer className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
               </a>
