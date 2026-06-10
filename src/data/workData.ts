@@ -4,6 +4,7 @@ import {GrLinkNext} from "react-icons/gr";
 import MyPorfotlio from "@/assets/image/myportfolio_image.png";
 import TeamProject from "@/assets/image/team_project.jpg";
 import Chabot from "@/assets/image/chatbot_image.jpg";
+import EcommerceProject from "@/assets/image/e-commerce-pic.png";
 export const workData: workProjectType[] = [
 {
     id: "01",
@@ -29,7 +30,31 @@ export const workData: workProjectType[] = [
   },
   {
     id: "03",
-    year: "2025",
+    year: "2026",
+    title: "FULL-STACK",
+    heading: "Ecommerce Website",
+    description:
+      "A scalable ecommerce platform developed with Next.js, Laravel, KHQR and PostgreSQL. Implemented secure authentication, dynamic product categories, shopping cart functionality, and responsive UI components to deliver a smooth and modern shopping experience.",
+    link: "https://github.com/1yhour/e-commerce",
+    linkText: [{ text: "Github", icon: FaGithub }],
+    image: EcommerceProject,
+  },
+  {
+    id: "04",
+    year: "2026",
+    title: "TEAMWORK",
+    heading: "Collaborative Ecommerce Project",
+    description:
+      "Worked collaboratively in a development team to build a full-stack ecommerce platform. Contributed to implementing authentication, product management, and responsive UI components while coordinating through Git and GitHub workflows to ensure efficient development and code integration.",
+    linkText: [
+      { text: "View Project", href: "https://ecommerce-two-hazel-vqx631jz4e.vercel.app/store", icon: GrLinkNext },
+      { text: "Github",       href: "https://github.com/yehemo/Ecommerce", icon: FaGithub  },
+    ],
+    image: TeamProject,
+  },
+  {
+    id: "05",
+    year: "2026",
     title: "LET'S TALK",
     heading: "Your Project?",
     description:
@@ -38,4 +63,5 @@ export const workData: workProjectType[] = [
     linkText: [{ text: "Let's Talk", icon: GrLinkNext }],
     image: TeamProject,
   },
+  
 ]
