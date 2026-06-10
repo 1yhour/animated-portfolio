@@ -23,15 +23,6 @@ const WorkSectionCard = ({
   // ADDED: State to track when the image finishes downloading
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  const handleLinkClick = () => {
-    if (/^https?:\/\//i.test(items.link)) {
-      window.open(items.link, "_blank", "noopener,noreferrer");
-      return;
-    }
-
-    scrollToSection(items.link);
-  };
-
   return (
     <div
       className="sticky flex items-start justify-center pointer-events-none"
@@ -85,23 +76,38 @@ const WorkSectionCard = ({
                 </p>
               </div>
 
-              <div className="flex items-center gap-6">
-                <button
-                  type="button"
-                  onClick={handleLinkClick}
-                  className="group inline-flex items-center gap-8 font-medium text-sm hover:gap-5 transition-all duration-300"
-                >
-                  {items.linkText?.map((link, i) => (
-                    <span
+              <div className="flex items-center gap-6 flex-wrap">
+                {items.linkText?.map((link, i) => {
+                  // Per-link href wins; fall back to the card-level link
+                  const href = link.href ?? items.link ?? "";
+
+                  const handleClick = () => {
+                    if (!href) return;
+                    if (/^https?:\/\//i.test(href)) {
+                      window.open(href, "_blank", "noopener,noreferrer");
+                    } else {
+                      scrollToSection(href);
+                    }
+                  };
+
+                  return (
+                    <button
                       key={i}
-                      className="flex items-center gap-2 text-white border-b border-white/30 pb-0.5 cursor-none"
+                      type="button"
+                      onClick={handleClick}
+                      disabled={!href}
+                      className="group inline-flex items-center gap-2 font-medium text-sm
+                        text-white border-b border-white/30 pb-0.5 cursor-none
+                        hover:border-white transition-colors duration-300
+                        disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       {link.text}
                       {link.icon && <link.icon />}
-                    </span>
-                  ))}
-                </button>
+                    </button>
+                  );
+                })}
               </div>
+
             </div>
 
             {/* ── RIGHT: Image (Updated with Skeleton & Fade) ── */}

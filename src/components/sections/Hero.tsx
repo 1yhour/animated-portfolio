@@ -6,7 +6,8 @@ const Hero = () => {
   const heroLinks = [
     { label: "About", target: "about-link", index: "01" },
     { label: "Work", target: "work-link", index: "02" },
-    { label: "Contact", target: "contact-link", index: "03" },
+    { label: "Process", target: "process-link", index: "03"},
+    { label: "Contact", target: "contact-link", index: "04" }
   ];
 
   return (

@@ -35,10 +35,11 @@ export type workProjectType = {
   title: string,
   heading: string,
   description: string,
-  link: string,
+  link?: string,
   image: string,
   linkText: {
     text: string,
+    href?: string,
     icon: React.ComponentType<{ className?: string }>,
   }[],
 }
