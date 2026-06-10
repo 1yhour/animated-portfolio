@@ -82,7 +82,9 @@ const WorkSection = () => {
             scale={scale}
             y={y}
             stickyTop={stickyTop}
-            zIndex={(index + 1) * 10} index={0}/>
+            zIndex={(index + 1) * 5}
+            index={index}
+          />
         );
       })}
     </section>

@@ -5,6 +5,7 @@ import MyPorfotlio from "@/assets/image/myportfolio_image.png";
 import TeamProject from "@/assets/image/team_project.jpg";
 import Chabot from "@/assets/image/chatbot_image.jpg";
 import EcommerceProject from "@/assets/image/e-commerce-pic.png";
+import TeamEcommerce from "@/assets/image/team-ecommerce.png"
 export const workData: workProjectType[] = [
 {
     id: "01",
@@ -50,7 +51,7 @@ export const workData: workProjectType[] = [
       { text: "View Project", href: "https://ecommerce-two-hazel-vqx631jz4e.vercel.app/store", icon: GrLinkNext },
       { text: "Github",       href: "https://github.com/yehemo/Ecommerce", icon: FaGithub  },
     ],
-    image: TeamProject,
+    image: TeamEcommerce,
   },
   {
     id: "05",

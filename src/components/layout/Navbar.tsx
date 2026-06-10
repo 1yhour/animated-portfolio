@@ -69,7 +69,7 @@ const Navbar = () => {
     <motion.header
       animate={{ y: isNavbarVisible ? 0 : 100 }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
-      className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2"
+      className="fixed bottom-8 left-1/2 z-[100] -translate-x-1/2"
     >
       <div
         className={`relative z-50 flex w-max max-w-[calc(100vw-1.5rem)] items-center gap-[clamp(0.35rem,1.4vw,0.85rem)] overflow-x-auto rounded-full border px-[clamp(0.65rem,1.8vw,1.1rem)] py-[clamp(0.45rem,1vw,0.7rem)] backdrop-blur-md shadow-[0_10px_35px_rgba(0,0,0,0.22)] ${dockToneClass} ${navToneClass}`}
