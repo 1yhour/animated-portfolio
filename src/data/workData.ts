@@ -35,7 +35,7 @@ export const workData: workProjectType[] = [
     title: "FULL-STACK",
     heading: "Ecommerce Website",
     description:
-      "A scalable ecommerce platform developed with Next.js, Laravel, KHQR and PostgreSQL. Implemented secure authentication, dynamic product categories, shopping cart functionality, and responsive UI components to deliver a smooth and modern shopping experience.",
+      "Full-stack ecommerce platform built with Next.js, Laravel, and PostgreSQL — featuring KHQR payments, secure auth, and a polished shopping experience.",
     link: "https://github.com/1yhour/e-commerce",
     linkText: [{ text: "Github", icon: FaGithub }],
     image: EcommerceProject,
@@ -46,7 +46,7 @@ export const workData: workProjectType[] = [
     title: "TEAMWORK",
     heading: "Collaborative Ecommerce Project",
     description:
-      "Worked collaboratively in a development team to build a full-stack ecommerce platform. Contributed to implementing authentication, product management, and responsive UI components while coordinating through Git and GitHub workflows to ensure efficient development and code integration.",
+      "Team-built ecommerce platform where I contributed auth, product management, and responsive UI — coordinated end-to-end through Git workflows.",
     linkText: [
       { text: "View Project", href: "https://ecommerce-two-hazel-vqx631jz4e.vercel.app/store", icon: GrLinkNext },
       { text: "Github",       href: "https://github.com/yehemo/Ecommerce", icon: FaGithub  },
